@@ -1,192 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaimail | Private Secure Dashboard</title>
-    <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { margin: 0; display: flex; height: 100vh; background-color: #000; color: white; overflow: hidden; }
-
-        /* --- AUTH SCREEN --- */
-        #auth-screen { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .auth-card { width: 380px; padding: 40px; border: 2px solid #d93025; border-radius: 12px; text-align: center; background: #111; }
-        .input-group { display: flex; align-items: center; background: #222; border: 1px solid #444; border-radius: 4px; margin-bottom: 10px; padding-right: 10px; }
-        .auth-card input { flex: 1; background: transparent; border: none; color: white; padding: 12px; outline: none; }
-        .domain-label { color: #d93025; font-weight: bold; font-size: 13px; }
-        .auth-btn { width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 10px; transition: 0.3s; }
-        .login-btn { background: #d93025; color: white; }
-        .signup-btn { background: transparent; border: 1px solid #444; color: #aaa; }
-
-        /* --- DASHBOARD --- */
-        #main-dashboard { display: none; width: 100%; height: 100%; flex-direction: row; }
-        .sidebar { width: 250px; padding: 20px; background: #111; border-right: 1px solid #d93025; }
-        .logo { font-size: 26px; font-weight: bold; color: #d93025; margin-bottom: 30px; letter-spacing: 1px; }
-        .nav-item { padding: 12px; cursor: pointer; border-radius: 8px; margin-bottom: 5px; color: #888; transition: 0.2s; }
-        .nav-item.active { background: #d93025; color: white; }
-        
-        .content { flex: 1; padding: 20px; background: #000; margin: 15px; border-radius: 16px; border: 1px solid #222; position: relative; overflow-y: auto; }
-        .user-bar { position: absolute; top: 15px; right: 20px; display: flex; align-items: center; gap: 15px; }
-        .logout-btn { background: #d93025; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-
-        /* --- COMPOSER --- */
-        .composer-box { position: fixed; bottom: 0; right: 80px; width: 500px; background: #111; border-radius: 10px 10px 0 0; border: 1px solid #d93025; }
-        .composer-header { background: #d93025; padding: 10px; font-weight: bold; color: white; }
-        form { display: flex; flex-direction: column; padding: 15px; }
-        form input, form textarea { background: #222; border: 1px solid #333; color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px; outline: none; }
-        .send-btn { background: #d93025; color: white; border: none; padding: 10px 24px; border-radius: 20px; cursor: pointer; align-self: flex-end; }
-        
-        /* --- SENT LIST --- */
-        .email-item { border-bottom: 1px solid #222; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        #my-form-status { font-size: 12px; text-align: center; margin-top: 5px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaimail | Real Anywhere Mail</title>
+<style>
+* { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { margin: 0; display: flex; height: 100vh; background-color: #000; color: white; overflow: hidden; }
+#auth-screen { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.auth-card { width: 380px; padding: 40px; border: 2px solid #d93025; border-radius: 12px; text-align: center; background: #111; }
+.input-group { display: flex; align-items: center; background: #222; border: 1px solid #444; border-radius: 4px; margin-bottom: 10px; padding-right: 10px; }
+.auth-card input { flex: 1; background: transparent; border: none; color: white; padding: 12px; outline: none; }
+.domain-label { color: #d93025; font-weight: bold; font-size: 13px; }
+.auth-btn { width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 10px; transition: 0.3s; }
+.login-btn { background: #d93025; color: white; }
+.signup-btn { background: transparent; border: 1px solid #444; color: #aaa; }
+#main-dashboard { display: none; width: 100%; height: 100%; flex-direction: row; }
+.sidebar { width: 250px; padding: 20px; background: #111; border-right: 1px solid #d93025; }
+.logo { font-size: 26px; font-weight: bold; color: #d93025; margin-bottom: 30px; letter-spacing: 1px; }
+.nav-item { padding: 12px; cursor: pointer; border-radius: 8px; margin-bottom: 5px; color: #888; transition: 0.2s; }
+.nav-item.active { background: #d93025; color: white; }
+.content { flex: 1; padding: 20px; background: #000; margin: 15px; border-radius: 16px; border: 1px solid #222; position: relative; overflow-y: auto; }
+.user-bar { position: absolute; top: 15px; right: 20px; display: flex; align-items: center; gap: 15px; }
+.logout-btn { background: #d93025; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.composer-box { position: fixed; bottom: 0; right: 80px; width: 500px; background: #111; border-radius: 10px 10px 0 0; border: 1px solid #d93025; }
+.composer-header { background: #d93025; padding: 10px; font-weight: bold; color: white; }
+form { display: flex; flex-direction: column; padding: 15px; }
+form input, form textarea { background: #222; border: 1px solid #333; color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px; outline: none; }
+.send-btn { background: #d93025; color: white; border: none; padding: 10px 24px; border-radius: 20px; cursor: pointer; align-self: flex-end; }
+.email-item { border-bottom: 1px solid #222; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+#my-form-status { font-size: 12px; text-align: center; margin-top: 5px; }
+</style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <div class="auth-card">
-            <h1 class="logo">KAIMAIL</h1>
-            <div class="input-group">
-                <input type="text" id="username" placeholder="Username">
-                <span class="domain-label">@kaimail.vercel.app</span>
-            </div>
-            <input type="password" id="password" placeholder="Password" style="width:100%; background:#222; border:1px solid #444; color:white; padding:12px; border-radius:4px; margin-bottom:15px; outline:none;">
-            <button class="auth-btn login-btn" id="loginBtn">SIGN IN</button>
-            <button class="auth-btn signup-btn" id="signupBtn">Create Account</button>
-        </div>
-    </div>
+<div id="auth-screen">
+<div class="auth-card">
+<h1 class="logo">KAIMAIL</h1>
+<div class="input-group">
+<input type="text" id="username" placeholder="Username">
+<span class="domain-label">@kaimail.vercel.app</span>
+</div>
+<input type="password" id="password" placeholder="Password" style="width:100%; background:#222; border:1px solid #444; color:white; padding:12px; border-radius:4px; margin-bottom:15px; outline:none;">
+<button class="auth-btn login-btn" id="loginBtn">SIGN IN</button>
+<button class="auth-btn signup-btn" id="signupBtn">Create Account</button>
+</div>
+</div>
 
-    <div id="main-dashboard">
-        <div class="sidebar">
-            <div class="logo">KAIMAIL</div>
-            <div class="nav-item active" id="nav-inbox">📥 Inbox</div>
-            <div class="nav-item" id="nav-sent">📤 Sent</div>
-        </div>
+<div id="main-dashboard">
+<div class="sidebar">
+<div class="logo">KAIMAIL</div>
+<div class="nav-item active" id="nav-inbox">📥 Inbox</div>
+<div class="nav-item" id="nav-sent">📤 Sent</div>
+</div>
 
-        <div class="content">
-            <div class="user-bar">
-                <span id="current-user" style="color: #888;"></span>
-                <button class="logout-btn" id="logoutBtn">LOGOUT</button>
-            </div>
+<div class="content">
+<div class="user-bar">
+<span id="current-user" style="color: #888;"></span>
+<button class="logout-btn" id="logoutBtn">LOGOUT</button>
+</div>
 
-            <div id="view-inbox">
-                <h2 style="color:#d93025">Inbox</h2>
-                <div style="padding: 40px; color: #444; border: 1px dashed #333; text-align: center;">No new incoming mail.</div>
-            </div>
+<div id="view-inbox">
+<h2 style="color:#d93025">Inbox</h2>
+<div style="padding: 40px; color: #444; border: 1px dashed #333; text-align: center;">Loading...</div>
+</div>
 
-            <div id="view-sent" style="display:none;">
-                <h2 style="color:#d93025">Sent Messages</h2>
-                <div id="sent-list"></div>
-            </div>
-        </div>
+<div id="view-sent" style="display:none;">
+<h2 style="color:#d93025">Sent Messages</h2>
+<div id="sent-list">Loading...</div>
+</div>
+</div>
 
-        <div class="composer-box">
-            <div class="composer-header">New Message</div>
-            <form id="mailForm" action="https://formspree.io/f/xdagdzag" method="POST">
-                <input type="email" name="email" id="msg-to" placeholder="To:" required>
-                <input type="text" name="subject" id="msg-subject" placeholder="Subject:">
-                <textarea name="message" id="msg-body" rows="5" placeholder="Your message..."></textarea>
-                <button type="submit" class="send-btn" id="my-form-button">Send</button>
-                <p id="my-form-status"></p>
-            </form>
-        </div>
-    </div>
+<div class="composer-box">
+<div class="composer-header">New Message</div>
+<form id="mailForm" action="https://formspree.io/f/xdagdzag" method="POST">
+<input type="email" name="email" id="msg-to" placeholder="To:" required>
+<input type="text" name="subject" id="msg-subject" placeholder="Subject:">
+<textarea name="message" id="msg-body" rows="5" placeholder="Your message..."></textarea>
+<button type="submit" class="send-btn" id="my-form-button">Send</button>
+<p id="my-form-status"></p>
+</form>
+</div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBcuRlVYGdihgqLgG_qBakWX0Gjv1LVnqI",
-            authDomain: "kaimail.firebaseapp.com",
-            projectId: "kaimail",
-            storageBucket: "kaimail.firebasestorage.app",
-            messagingSenderId: "674907443966",
-            appId: "1:674907443966:web:e4dfb78dbd9b228541cbaf"
-        };
+const firebaseConfig = {
+apiKey: "AIzaSyBcuRlVYGdihgqLgG_qBakWX0Gjv1LVnqI",
+authDomain: "kaimail.firebaseapp.com",
+projectId: "kaimail",
+storageBucket: "kaimail.firebasestorage.app",
+messagingSenderId: "674907443966",
+appId: "1:674907443966:web:e4dfb78dbd9b228541cbaf"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        // --- AUTH ---
-        const authAction = async (type) => {
-            const email = document.getElementById('username').value.trim() + "@kaimail.vercel.app";
-            const pass = document.getElementById('password').value;
-            try {
-                type === 'up' ? await createUserWithEmailAndPassword(auth, email, pass) : await signInWithEmailAndPassword(auth, email, pass);
-            } catch (e) { alert(e.message); }
-        };
+// --- AUTH ---
+const authAction = async (type) => {
+  const email = document.getElementById('username').value.trim() + "@kaimail.vercel.app";
+  const pass = document.getElementById('password').value;
+  try {
+    type === 'up' ? await createUserWithEmailAndPassword(auth, email, pass) : await signInWithEmailAndPassword(auth, email, pass);
+  } catch (e) { alert(e.message); }
+};
+document.getElementById('signupBtn').onclick = () => authAction('up');
+document.getElementById('loginBtn').onclick = () => authAction('in');
+document.getElementById('logoutBtn').onclick = () => signOut(auth);
 
-        document.getElementById('signupBtn').onclick = () => authAction('up');
-        document.getElementById('loginBtn').onclick = () => authAction('in');
-        document.getElementById('logoutBtn').onclick = () => signOut(auth);
+// --- NAV ---
+const switchView = (view) => {
+  document.getElementById('view-inbox').style.display = view === 'inbox' ? 'block' : 'none';
+  document.getElementById('view-sent').style.display = view === 'sent' ? 'block' : 'none';
+  document.getElementById('nav-inbox').className = `nav-item ${view === 'inbox' ? 'active' : ''}`;
+  document.getElementById('nav-sent').className = `nav-item ${view === 'sent' ? 'active' : ''}`;
+  if(view === 'sent') loadSent();
+  if(view === 'inbox') loadInbox();
+};
+document.getElementById('nav-inbox').onclick = () => switchView('inbox');
+document.getElementById('nav-sent').onclick = () => switchView('sent');
 
-        // --- NAV ---
-        const switchView = (view) => {
-            document.getElementById('view-inbox').style.display = view === 'inbox' ? 'block' : 'none';
-            document.getElementById('view-sent').style.display = view === 'sent' ? 'block' : 'none';
-            document.getElementById('nav-inbox').className = `nav-item ${view === 'inbox' ? 'active' : ''}`;
-            document.getElementById('nav-sent').className = `nav-item ${view === 'sent' ? 'active' : ''}`;
-            if(view === 'sent') loadSent();
-        };
-        document.getElementById('nav-inbox').onclick = () => switchView('inbox');
-        document.getElementById('nav-sent').onclick = () => switchView('sent');
+// --- SEND FORM ---
+const form = document.getElementById("mailForm");
+form.onsubmit = async function(event) {
+  event.preventDefault();
+  const status = document.getElementById("my-form-status");
+  const formData = new FormData(event.target);
+  try {
+    // Save sent email
+    await addDoc(collection(db, "sent_emails"), {
+      from: auth.currentUser.email,
+      to: document.getElementById('msg-to').value,
+      subject: document.getElementById('msg-subject').value,
+      message: document.getElementById('msg-body').value,
+      sentAt: serverTimestamp()
+    });
 
-        // --- FORMSPREE AJAX + FIREBASE ---
-        const form = document.getElementById("mailForm");
-        form.onsubmit = async function(event) {
-            event.preventDefault();
-            const status = document.getElementById("my-form-status");
-            const formData = new FormData(event.target);
+    // Save to recipient inbox
+    await addDoc(collection(db, "inbox_emails"), {
+      from: auth.currentUser.email,
+      to: document.getElementById('msg-to').value,
+      subject: document.getElementById('msg-subject').value,
+      message: document.getElementById('msg-body').value,
+      receivedAt: serverTimestamp()
+    });
 
-            // Save to Firebase first
-            try {
-                await addDoc(collection(db, "sent_emails"), {
-                    from: auth.currentUser.email,
-                    to: document.getElementById('msg-to').value,
-                    subject: document.getElementById('msg-subject').value,
-                    message: document.getElementById('msg-body').value,
-                    sentAt: serverTimestamp()
-                });
+    // Formspree send
+    const response = await fetch(event.target.action, { method: 'POST', body: formData, headers: { 'Accept':'application/json' } });
 
-                // Send via Formspree AJAX
-                const response = await fetch(event.target.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
+    if (response.ok) {
+      status.innerHTML = "Sent!";
+      status.style.color = "#34a853";
+      form.reset();
+      if(document.getElementById('view-sent').style.display === 'block') loadSent();
+    } else status.innerHTML = "Error sending.";
+  } catch (e) { alert(e.message); }
+};
 
-                if (response.ok) {
-                    status.innerHTML = "Sent!";
-                    status.style.color = "#34a853";
-                    form.reset();
-                    if(document.getElementById('view-sent').style.display === 'block') loadSent();
-                } else {
-                    status.innerHTML = "Error sending.";
-                }
-            } catch (e) { alert(e.message); }
-        };
+// --- LOAD SENT ---
+async function loadSent() {
+  const list = document.getElementById('sent-list');
+  list.innerHTML = "Loading...";
+  const q = query(collection(db, "sent_emails"), where("from", "==", auth.currentUser.email), orderBy("sentAt", "desc"));
+  const docs = await getDocs(q);
+  list.innerHTML = docs.empty ? "Empty" : "";
+  docs.forEach(doc => {
+    const d = doc.data();
+    list.innerHTML += `<div class="email-item"><div><b>To: ${d.to}</b><br>${d.subject}<br><small>${d.message}</small></div></div>`;
+  });
+}
 
-        // --- LOAD SENT ---
-        async function loadSent() {
-            const list = document.getElementById('sent-list');
-            list.innerHTML = "Loading...";
-            const q = query(collection(db, "sent_emails"), where("from", "==", auth.currentUser.email), orderBy("sentAt", "desc"));
-            const docs = await getDocs(q);
-            list.innerHTML = docs.empty ? "Empty" : "";
-            docs.forEach(doc => {
-                const d = doc.data();
-                list.innerHTML += `<div class="email-item"><div><b>To: ${d.to}</b><br>${d.subject}</div></div>`;
-            });
-        }
+// --- LOAD INBOX ---
+async function loadInbox() {
+  const inbox = document.getElementById('view-inbox');
+  inbox.innerHTML = "<h2 style='color:#d93025'>Inbox</h2>Loading...";
+  const q = query(collection(db, "inbox_emails"), where("to", "==", auth.currentUser.email), orderBy("receivedAt", "desc"));
+  const docs = await getDocs(q);
+  inbox.innerHTML = "<h2 style='color:#d93025'>Inbox</h2>";
+  if(docs.empty) inbox.innerHTML += "<div style='color:#444'>No mail.</div>";
+  docs.forEach(doc => {
+    const d = doc.data();
+    inbox.innerHTML += `<div class="email-item"><div><b>From: ${d.from}</b><br>${d.subject}<br><small>${d.message}</small></div></div>`;
+  });
+}
 
-        onAuthStateChanged(auth, (user) => {
-            document.getElementById('auth-screen').style.display = user ? 'none' : 'flex';
-            document.getElementById('main-dashboard').style.display = user ? 'flex' : 'none';
-            if(user) document.getElementById('current-user').innerText = user.email;
-        });
-    </script>
+// --- AUTH STATE ---
+onAuthStateChanged(auth, (user) => {
+  document.getElementById('auth-screen').style.display = user ? 'none' : 'flex';
+  document.getElementById('main-dashboard').style.display = user ? 'flex' : 'none';
+  if(user) document.getElementById('current-user').innerText = user.email;
+});
+</script>
 </body>
 </html>
